@@ -30,3 +30,7 @@ I'm the arduino coordinator for Girls Who Code club.
 
 Email: mayaccarroll@gmail.com
 Linkedin: maya--carroll
+
+
+![Snake animation]
+(https://github.com/mcarrollg22/mcarrollg22/blob/output/github-contribution-grid-snake.svg)
