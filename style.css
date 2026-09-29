@@ -1,16 +1,44 @@
- :root {
-  /* --- Colors --- */
-  --paper:        #FBF6EE;   /* page background */
-  --paper-raised: #FFFDF9;   /* cards, slightly lighter than the page */
-  --paper-sunk:   #F4EDE1;   /* alternating section background */
-  --ink:          #2C2721;   /* body text */
-  --ink-soft:     #6B6257;   /* secondary text */
-  --ink-faint:    #9C9284;   /* captions, meta */
-  --line:         #E4D9C7;   /* borders */
-  --accent:       #B0553A;   /* terracotta — links, buttons, underlines */
-  --accent-dark:  #8E4229;   /* hover state */
-  --accent-wash:  #F2E2D9;   /* tinted backgrounds */
+:root {
+  /* --- Surfaces --- */
+  --paper:        #FEFAF6;   /* page background */
+  --paper-raised: #FFFFFF;   /* cards, the resume sheet */
+  --paper-sunk:   #FBEEE2;   /* alternating sections, stat tiles */
+  --paper-veil:   254 250 246;  /* sticky header, used at /0.85 */
+
+  /* --- Ink. 15.4 : 9.2 : 4.9 against --paper. All pass AA. --- */
+  --ink:          #450920;   /* night bordeaux */
+  --ink-soft:     #6E3247;
+  --ink-faint:    #8A6373;
+
+  /* --- Lines --- */
+  --line:         #F1E1D4;
+  --line-strong:  #E4C9B4;
+
+  /* --- Accent: berry crush. 6.1:1 on paper; 6.3:1 white-on-accent. --- */
+  --accent:       #A53860;
+  --accent-dark:  #7E2748;   /* hover */
+  --accent-wash:  #FBE9EC;   /* tinted backgrounds, badges */
+  --accent-rgb:   165 56 96; /* translucent fills */
+
+  /* --- On the dark footer --- */
+  --on-dark:        #E7CFD6;
+  --on-dark-faint:  #B08D99;
+  --on-dark-accent: #FFA5AB; /* cotton candy */
+
+  /* --- Resume sheet: stays document-like, tinted to the theme --- */
+  --doc-ink:      #450920;
+  --doc-ink-soft: #6E3247;
+  --doc-rule:     #450920;
+  --doc-faint:    #C9AFB8;
+  --doc-border:   #F2E4DA;
+
+  --shadow-rgb:   69 9 32;
+}
  
+/* ------------------------------------------------------------
+   Everything below is theme-independent.
+   ------------------------------------------------------------ */
+:root {
   /* --- Type --- */
   --font-display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -24,10 +52,10 @@
   /* --- Shape --- */
   --radius:       14px;
   --radius-lg:    20px;
-  --shadow:       0 1px 2px rgba(44, 39, 33, 0.04),
-                  0 8px 24px -12px rgba(44, 39, 33, 0.14);
-  --shadow-lift:  0 2px 4px rgba(44, 39, 33, 0.05),
-                  0 18px 40px -18px rgba(44, 39, 33, 0.24);
+  --shadow:       0 1px 2px rgb(var(--shadow-rgb) / 0.05),
+                  0 8px 24px -12px rgb(var(--shadow-rgb) / 0.16);
+  --shadow-lift:  0 2px 4px rgb(var(--shadow-rgb) / 0.06),
+                  0 18px 40px -18px rgb(var(--shadow-rgb) / 0.26);
 }
  
  
@@ -165,7 +193,7 @@ a { color: var(--accent); }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(251, 246, 238, 0.85);
+  background: rgb(var(--paper-veil) / 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
@@ -175,7 +203,7 @@ a { color: var(--accent); }
 /* script.js adds .is-scrolled once you scroll down */
 .site-header.is-scrolled {
   border-bottom-color: var(--line);
-  box-shadow: 0 4px 20px -16px rgba(44, 39, 33, 0.5);
+  box-shadow: 0 4px 20px -16px rgb(var(--shadow-rgb) / 0.5);
 }
  
 .header-inner {
@@ -377,7 +405,7 @@ a { color: var(--accent); }
     repeating-linear-gradient(
       45deg,
       transparent 0 10px,
-      rgba(176, 85, 58, 0.06) 10px 20px
+      rgb(var(--accent-rgb) / 0.07) 10px 20px
     ),
     var(--accent-wash);
 }
@@ -419,7 +447,7 @@ a { color: var(--accent); }
 .card-project:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lift);
-  border-color: #D8C8B0;
+  border-color: var(--line-strong);
 }
 .card-project:hover .arrow-link span { transform: translateX(4px); }
  
@@ -467,6 +495,647 @@ a { color: var(--accent); }
  
  
 /* ============================================================
+   7d. INNER PAGES — shared page header
+   Used by resume.html and any other subpage.
+   ============================================================ */
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gap);
+  flex-wrap: wrap;
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  padding-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(2rem, 5vw, 3.25rem);
+}
+ 
+.page-title {
+  font-size: clamp(2.1rem, 5vw, 3.1rem);
+  margin: 0 0 0.25rem;
+}
+ 
+.page-meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+}
+ 
+.btn-download { padding: 0.7rem 1.4rem; }
+ 
+ 
+/* ============================================================
+   7e. RESUME PAGE — the "sheet of paper" look
+   Everything inside .sheet is styled like a printed document:
+   Times, tab-aligned dates, ruled section headings.
+   ============================================================ */
+.sheet-page { padding-block: clamp(1.75rem, 4vw, 3rem) clamp(3rem, 7vw, 5rem); }
+ 
+/* --- Toolbar above the paper --- */
+.sheet-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  flex-wrap: wrap;
+  max-width: 8.5in;
+  margin: 0 auto 1.25rem;
+}
+ 
+.sheet-meta {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink-faint);
+}
+ 
+.sheet-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+ 
+.btn-ghost {
+  background: transparent;
+  color: var(--accent) !important;
+  border: 1px solid var(--line);
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  background: var(--accent-wash);
+  border-color: var(--accent);
+}
+ 
+/* --- The paper itself --- */
+.sheet {
+  max-width: 8.5in;                 /* US Letter width */
+  margin-inline: auto;
+  background: var(--paper-raised);
+  color: var(--doc-ink);
+  border: 1px solid var(--doc-border);
+  border-radius: 2px;
+  padding: 0.6in 0.7in 0.7in;
+  box-shadow:
+    0 1px 2px rgb(var(--shadow-rgb) / 0.07),
+    0 24px 60px -24px rgb(var(--shadow-rgb) / 0.34);
+ 
+  /* Document typography — deliberately different from the rest of the
+     site, because this is meant to read as a printed page. */
+  font-family: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  font-size: 11.5pt;
+  line-height: 1.34;
+}
+ 
+.sheet p { max-width: none; }
+ 
+/* --- Letterhead --- */
+.doc-head {
+  text-align: center;
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.65rem;
+}
+ 
+.doc-name {
+  font-family: inherit;
+  font-size: 23pt;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin: 0 0 0.3rem;
+  color: var(--doc-ink);
+}
+ 
+.doc-contact {
+  margin: 0;
+  font-size: 10.5pt;
+  color: var(--doc-ink-soft);
+}
+.doc-contact a {
+  color: var(--doc-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--doc-faint);
+}
+.doc-contact a:hover { border-bottom-color: var(--doc-ink); }
+ 
+.doc-sep { color: var(--doc-faint); padding-inline: 0.25rem; }
+ 
+/* --- Section headings with the ruled underline --- */
+.doc-section { margin-bottom: 0.85rem; }
+.doc-section-last { margin-bottom: 0; }
+ 
+.doc-section-title {
+  font-family: inherit;
+  font-size: 11.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--doc-ink);
+  margin: 0 0 0.4rem;
+  padding-bottom: 1px;
+  border-bottom: 1.25px solid var(--doc-rule);
+}
+ 
+/* --- Entries: left content, right-aligned dates/location --- */
+.doc-entry { margin-bottom: 0.6rem; }
+.doc-entry:last-child { margin-bottom: 0; }
+ 
+.doc-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+ 
+.doc-left { flex: 1 1 auto; }
+ 
+.doc-right {
+  flex: 0 0 auto;
+  text-align: right;
+  white-space: nowrap;
+}
+ 
+/* The second line of an entry — role and dates, italic */
+.doc-row-sub { font-style: italic; }
+ 
+.doc-list {
+  list-style: disc;
+  margin: 0.15rem 0 0;
+  padding-left: 1.15rem;
+}
+ 
+.doc-list li {
+  margin-bottom: 0.1rem;
+  font-size: 11pt;
+}
+ 
+.doc-line {
+  margin: 0 0 0.22rem;
+  font-size: 11pt;
+}
+.doc-line:last-child { margin-bottom: 0; }
+ 
+/* --- Narrow screens: shrink the page rather than break the layout --- */
+@media (max-width: 800px) {
+  .sheet {
+    padding: 1.6rem 1.4rem;
+    font-size: 10.5pt;
+  }
+  .doc-name { font-size: 19pt; }
+  .doc-contact { font-size: 9.5pt; }
+  .doc-section-title { font-size: 10.5pt; }
+  .doc-list li, .doc-line { font-size: 10pt; }
+}
+ 
+@media (max-width: 560px) {
+  /* Stack the two columns so long date ranges stop squeezing the title */
+  .doc-row { display: block; }
+  .doc-right {
+    display: block;
+    text-align: left;
+    white-space: normal;
+    color: var(--doc-ink-soft);
+    font-size: 0.94em;
+  }
+  .sheet { padding: 1.25rem 1.1rem; }
+  .sheet-toolbar { justify-content: flex-start; }
+}
+ 
+ 
+/* ============================================================
+   7f. ABOUT PAGE
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
+}
+ 
+.prose p {
+  color: var(--ink-soft);
+  margin-bottom: 1.15em;
+  max-width: 62ch;
+}
+ 
+.prose-lede {
+  font-size: 1.2rem;
+  color: var(--ink) !important;
+  line-height: 1.55;
+}
+ 
+.prose-outro {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+}
+ 
+.about-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 6rem;
+}
+ 
+.photo-about { aspect-ratio: 4 / 5; }
+ 
+.fact-box {
+  background: var(--paper-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+ 
+.fact-title {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1rem;
+}
+ 
+.fact-list { margin: 0 0 1.25rem; }
+ 
+.fact-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.fact-row:first-child { border-top: 0; padding-top: 0; }
+ 
+.fact-row dt {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: 0.1rem;
+}
+ 
+.fact-row dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+ 
+ 
+/* ============================================================
+   7g. PROJECTS PAGE
+   ============================================================ */
+.proj-group { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+ 
+.group-title {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.75rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+ 
+.proj {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  /* Offsets the sticky header when you jump to #polymer etc. */
+  scroll-margin-top: 6rem;
+}
+.proj:last-child { margin-bottom: 0; }
+ 
+/* Short entries with no image go full width */
+.proj-brief {
+  grid-template-columns: 1fr;
+  max-width: 62ch;
+}
+ 
+.photo-proj { aspect-ratio: 4 / 3; position: sticky; top: 6rem; }
+ 
+.proj-num {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  margin: 0 0 0.4rem;
+}
+ 
+.proj-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 0 0.35rem;
+}
+ 
+.proj-meta {
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+  margin: 0 0 1.1rem;
+}
+ 
+.proj-summary {
+  font-size: 1.075rem;
+  color: var(--ink);
+  margin: 0 0 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+ 
+.proj-status {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  margin: 0;
+}
+ 
+/* The five beats */
+.beat { margin-bottom: 1.4rem; }
+.beat:last-child { margin-bottom: 0; }
+ 
+.beat-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 0.35rem;
+}
+ 
+.beat p {
+  margin: 0;
+  font-size: 0.975rem;
+  color: var(--ink-soft);
+}
+ 
+.proj-note {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.875rem;
+  color: var(--accent-dark);
+  background: var(--accent-wash);
+  border-radius: var(--radius);
+}
+ 
+ 
+/* ============================================================
+   7g2. COURSEWORK  (bottom of the projects page)
+   ============================================================ */
+.course-intro {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
+}
+ 
+.course-blurb {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+ 
+/* --- KPI row. Three headline numbers, no chart.
+       Values use the SANS face on purpose: a serif at display size reads as
+       decoration rather than data. Proportional figures, not tabular —
+       tabular-nums is for columns that must align vertically. --- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+ 
+.stat {
+  background: var(--paper-sunk);
+  padding: 0.9rem 1rem 1rem;
+  /* Labels wrap to different line counts ("GPA" vs "Expected graduation"),
+     so push the values to a shared baseline instead of letting them drift. */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+ 
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
+}
+ 
+.stat-value {
+  font-family: var(--font-body);
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+ 
+/* --- Course blocks --- */
+.course-block { margin-bottom: 2rem; }
+.course-block:last-child { margin-bottom: 0; }
+ 
+.course-heading {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 0.5rem;
+}
+ 
+.course-list {
+  border-top: 1px solid var(--line);
+}
+ 
+.course {
+  border-bottom: 1px solid var(--line);
+}
+ 
+.course-name {
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+ 
+/* Plain rows (no project) */
+.course > .course-name {
+  display: block;
+  padding: 0.7rem 0.25rem;
+}
+ 
+/* --- Rows that expand into a project --- */
+.course-has-project summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.25rem;
+  cursor: pointer;
+  list-style: none;              /* hide the default triangle */
+  transition: color 0.15s ease;
+}
+.course-has-project summary::-webkit-details-marker { display: none; }
+ 
+.course-has-project summary:hover .course-name { color: var(--ink); }
+ 
+.course-has-project summary .course-name { font-weight: 500; color: var(--ink); }
+ 
+.course-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+}
+ 
+/* The chevron, drawn in CSS so there's no icon file to manage */
+.course-has-project summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.5px solid var(--ink-faint);
+  border-bottom: 1.5px solid var(--ink-faint);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 0.2s ease;
+}
+.course-has-project details[open] summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+ 
+.course-project {
+  padding: 0.25rem 0.25rem 1.1rem 0.25rem;
+  max-width: 62ch;
+}
+ 
+.course-project p {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.6rem;
+}
+ 
+.course-project-title {
+  font-weight: 600;
+  color: var(--ink) !important;
+}
+ 
+.course-tools {
+  font-size: 0.78rem !important;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint) !important;
+  margin-bottom: 0 !important;
+}
+ 
+ 
+/* ============================================================
+   7h. INVOLVEMENT PAGE
+   ============================================================ */
+.involve-list { padding-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+ 
+.involve {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+  align-items: start;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 6rem;
+}
+.involve:last-child { border-bottom: 0; margin-bottom: 0; }
+ 
+.photo-involve { aspect-ratio: 3 / 2; }
+ 
+.involve-title {
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  margin: 0 0 0.3rem;
+}
+ 
+.involve-role {
+  font-size: 0.975rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin: 0 0 1rem;
+}
+ 
+.involve-dates {
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+ 
+.involve-body p:not(.involve-role) {
+  font-size: 0.975rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.9rem;
+}
+ 
+.involve-body .arrow-link { margin-top: 0.35rem; }
+ 
+ 
+/* ============================================================
+   7i. "NEXT PAGE" CARD — bottom of every inner page
+   ============================================================ */
+.page-next { margin-bottom: clamp(3rem, 7vw, 5rem); }
+ 
+.next-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: var(--paper-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.35rem, 3vw, 1.9rem);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.next-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+ 
+.next-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+ 
+.next-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.next-card:hover .next-title { color: var(--accent); }
+ 
+ 
+/* ============================================================
    8. FOOTER
    ============================================================ */
 .site-footer {
@@ -489,7 +1158,7 @@ a { color: var(--accent); }
 }
  
 .footer-lede {
-  color: #C9BFB1;
+  color: var(--on-dark);
   margin-bottom: 1.25rem;
 }
  
@@ -498,14 +1167,14 @@ a { color: var(--accent); }
   font-size: clamp(1.1rem, 2.4vw, 1.45rem);
   color: var(--paper);
   text-decoration: none;
-  border-bottom: 2px solid rgba(176, 85, 58, 0.8);
+  border-bottom: 2px solid var(--on-dark-accent);
   padding-bottom: 2px;
   transition: border-color 0.2s ease, color 0.2s ease;
   overflow-wrap: anywhere;
 }
 .email-link:hover {
-  color: #F0C4B2;
-  border-bottom-color: #F0C4B2;
+  color: var(--on-dark-accent);
+  border-bottom-color: var(--on-dark-accent);
 }
  
 .footer-subtitle {
@@ -514,14 +1183,14 @@ a { color: var(--accent); }
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--on-dark-faint);
   margin-bottom: 0.9rem;
 }
  
 .footer-links li { margin-bottom: 0.55rem; }
  
 .footer-links a {
-  color: #C9BFB1;
+  color: var(--on-dark);
   text-decoration: none;
   font-size: 0.95rem;
   transition: color 0.18s ease;
@@ -534,9 +1203,9 @@ a { color: var(--accent); }
   gap: 1rem;
   flex-wrap: wrap;
   padding-top: 1.75rem;
-  border-top: 1px solid rgba(251, 246, 238, 0.14);
+  border-top: 1px solid rgb(var(--paper-veil) / 0.16);
   font-size: 0.85rem;
-  color: var(--ink-faint);
+  color: var(--on-dark-faint);
 }
 .footer-bottom p { margin: 0; }
  
@@ -578,6 +1247,20 @@ a { color: var(--accent); }
   }
   .project-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr; }
+ 
+  /* Inner pages: single column, nothing sticky */
+  .about-grid { grid-template-columns: 1fr; }
+  .about-side { position: static; flex-direction: row; flex-wrap: wrap; }
+  .about-side > * { flex: 1 1 260px; }
+  .photo-about { aspect-ratio: 3 / 2; }
+ 
+  .proj { grid-template-columns: 1fr; }
+  .photo-proj { position: static; aspect-ratio: 16 / 9; }
+ 
+  .involve { grid-template-columns: 1fr; }
+  .photo-involve { max-width: 460px; }
+ 
+  .course-intro { grid-template-columns: 1fr; }
 }
  
 /* --- Mobile: collapse the nav into a dropdown --- */
@@ -617,6 +1300,7 @@ a { color: var(--accent); }
   .project-grid { grid-template-columns: 1fr; }
   .involvement-grid { grid-template-columns: 1fr; }
   .section-head { margin-bottom: 1.75rem; }
+  .page-head { align-items: flex-start; }
 }
  
  
@@ -639,7 +1323,39 @@ a { color: var(--accent); }
    PRINT
    ============================================================ */
 @media print {
-  .site-header, .nav-toggle, .reveal { display: revert; opacity: 1; transform: none; }
-  .site-header { position: static; }
-  body { background: #fff; }
+  /* Never hide content just because the reveal animation hasn't fired */
+  .reveal { opacity: 1 !important; transform: none !important; }
+ 
+  body { background: #fff; color: #000; }
+ 
+  /* Print only the resume sheet — no site chrome, no shadow, no margins.
+     The page already looks like paper; printing just makes it paper. */
+  .site-header,
+  .nav-toggle,
+  .site-footer,
+  .sheet-toolbar,
+  .skip-link { display: none !important; }
+ 
+  .wrap { max-width: none; padding: 0; }
+  .sheet-page { padding: 0; }
+ 
+  .sheet {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 11pt;
+  }
+ 
+  .doc-contact a { border-bottom: 0; }
+ 
+  /* Keep a single job from splitting across pages */
+  .doc-entry { break-inside: avoid; }
+  .doc-section-title { break-after: avoid; }
+ 
+  a { color: #000; text-decoration: none; }
+ 
+  @page { margin: 0.55in 0.6in; }
 }
