@@ -32,4 +32,7 @@ Email: mayaccarroll@gmail.com
 Linkedin: maya--carroll
 
 
-![Snake animation](https://raw.githubusercontent.com/mcarrollg22/mcarrollg22/output/github-contribution-grid-snake.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mcarrollg22/mcarrollg22/output/github-contribution-grid-snake-dark.svg">
+  <img alt="Snake eating my contributions" src="https://raw.githubusercontent.com/mcarrollg22/mcarrollg22/output/github-contribution-grid-snake.svg">
+</picture>
