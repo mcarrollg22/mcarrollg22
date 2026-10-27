@@ -32,5 +32,4 @@ Email: mayaccarroll@gmail.com
 Linkedin: maya--carroll
 
 
-![Snake animation]
-(https://github.com/mcarrollg22/mcarrollg22/blob/output/github-contribution-grid-snake.svg)
+![Snake animation](https://raw.githubusercontent.com/mcarrollg22/mcarrollg22/output/github-contribution-grid-snake.svg)
